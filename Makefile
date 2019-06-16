@@ -2,7 +2,8 @@
 
 TARGETS = \
 	xenial \
-	bionic
+	bionic \
+	disco
 
 IMAGES = $(foreach target,$(TARGETS),build-essentials-$(target))
 
