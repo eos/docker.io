@@ -3,7 +3,8 @@
 TARGETS = \
 	xenial \
 	bionic \
-	disco
+	disco \
+	manylinux2014
 
 IMAGES = $(foreach target,$(TARGETS),build-essentials-$(target))
 
