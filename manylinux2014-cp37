@@ -1,16 +1,23 @@
 FROM quay.io/pypa/manylinux2014_x86_64:latest
+
+ENV PYTHON /opt/_internal/cpython-3.7.7/bin/python3.7m
+
 RUN yum -y install centos-release-scl \
  && yum-config-manager --enable rhel-server-rhscl-7-rpms \
  && yum -y install rh-git218
 RUN ln -s /opt/rh/rh-git218/root/usr/bin/git /usr/bin/git \
  && ln -s /opt/rh/httpd24/root/usr/lib64/libcurl-httpd24.so.4.5.0      /usr/lib64/libcurl-httpd24.so.4 \
  && ln -s /opt/rh/httpd24/root/usr/lib64/libnghttp2-httpd24.so.14.4.1  /usr/lib64/libnghttp2-httpd24.so.14
-RUN yum -y install boost169-filesystem boost169-python3-devel boost169-system chrpath cmake fftw-devel gsl gsl-devel hdf5-devel hdf5-static libtool python3 python3-devel python3-pip
-RUN pip3 install auditwheel h5py matplotlib 'numpy>=1.13.3,<2' scipy twine pyyaml wheel
+RUN yum -y install chrpath cmake fftw-devel gsl gsl-devel hdf5-devel hdf5-static libtool python3 python3-devel python3-pip
+RUN $PYTHON -m pip install h5py matplotlib 'numpy>=1.13.3,<2' scipy twine pyyaml wheel
+RUN curl -L -O https://github.com/fredRos/pypmc/archive/v1.1.4.tar.gz
+RUN $PYTHON -m pip install ./v1.1.4.tar.gz
 RUN rm -Rf /usr/local/bin/
+
+# remove system yaml and install v0.6.2
 RUN yum -y erase yaml-cpp
-RUN mkdir -p yaml/build \
- && pushd yaml \
+RUN mkdir -p /yaml/build \
+ && pushd /yaml \
  && curl -L -O https://github.com/jbeder/yaml-cpp/archive/yaml-cpp-0.6.2.tar.gz \
  && tar zxf yaml-cpp-0.6.2.tar.gz \
  && pushd build \
@@ -21,4 +28,15 @@ RUN mkdir -p yaml/build \
  && popd \
  && popd \
  && rm -Rf yaml
+
+# install boost
+RUN ln -s /opt/_internal/cpython-3.7.7/include/python3.7m  /opt/_internal/cpython-3.7.7/include/python3.7
+RUN mkdir /boost
+ADD ./boost /boost
+RUN pushd /boost \
+ && tar zxf /boost/boost_1_72_0.tar.gz \
+ && pushd boost_1_72_0 \
+ && ./bootstrap.sh --with-python=$PYTHON --with-libraries=filesystem,python,system \
+ && ./b2 install --build-type=minimal --prefix=/usr
+
 RUN ldconfig
