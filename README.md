@@ -5,4 +5,4 @@ This repository keeps track of the source files used to create Docker images for
 Presently we keep track of the [build-essential](https://hub.docker.com/r/eoshep/build-essentials/) images,
 which have all build-time dependencies pre-installed.
 
-We welcome bug fixed and additions.
+We welcome bug fixes and additions.
