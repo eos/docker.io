@@ -1,6 +1,6 @@
 FROM quay.io/pypa/manylinux2014_x86_64:latest
 
-ENV PYTHON /opt/_internal/cpython-3.8.2/bin/python3.8
+ENV PYTHON /opt/_internal/cpython-3.8.9/bin/python3.8
 
 RUN yum -y install centos-release-scl \
  && yum-config-manager --enable rhel-server-rhscl-7-rpms \
@@ -40,7 +40,7 @@ RUN pushd /boost \
 
 # install gcc-10
 RUN yum -y install epel-release \
- && yum -y install  --nogpg install https://mirror.ghettoforge.org/distributions/gf/gf-release-latest.gf.el7.noarch.rpm \
- && yum -y install gcc10-gcc-c+
+ && yum -y --nogpg install https://mirror.ghettoforge.org/distributions/gf/gf-release-latest.gf.el7.noarch.rpm \
+ && yum -y install gcc10-gcc-c++
 
 RUN ldconfig
