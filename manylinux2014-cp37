@@ -39,4 +39,9 @@ RUN pushd /boost \
  && ./bootstrap.sh --with-python=$PYTHON --with-libraries=filesystem,python,system \
  && ./b2 install --build-type=minimal --prefix=/usr
 
+# install gcc-10
+RUN yum -y install epel-release \
+ && yum -y install  --nogpg install https://mirror.ghettoforge.org/distributions/gf/gf-release-latest.gf.el7.noarch.rpm \
+ && yum -y install gcc10-gcc-c++
+
 RUN ldconfig
