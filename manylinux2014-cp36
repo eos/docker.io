@@ -1,6 +1,6 @@
 FROM quay.io/pypa/manylinux2014_x86_64:latest
 
-ENV PYTHON /opt/_internal/cpython-3.6.10/bin/python3.6m
+ENV PYTHON /opt/_internal/cpython-3.6.13/bin/python3.6m
 
 RUN yum -y install centos-release-scl \
  && yum-config-manager --enable rhel-server-rhscl-7-rpms \
