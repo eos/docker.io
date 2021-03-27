@@ -1,6 +1,6 @@
 FROM quay.io/pypa/manylinux2014_x86_64:latest
 
-ENV PYTHON /opt/_internal/cpython-3.7.7/bin/python3.7m
+ENV PYTHON /opt/_internal/cpython-3.7.10/bin/python3.7m
 
 RUN yum -y install centos-release-scl \
  && yum-config-manager --enable rhel-server-rhscl-7-rpms \
@@ -30,7 +30,7 @@ RUN mkdir -p /yaml/build \
  && rm -Rf yaml
 
 # install boost
-RUN ln -s /opt/_internal/cpython-3.7.7/include/python3.7m  /opt/_internal/cpython-3.7.7/include/python3.7
+RUN ln -s /opt/_internal/cpython-3.7.10/include/python3.7m  /opt/_internal/cpython-3.7.10/include/python3.7
 RUN mkdir /boost
 ADD ./boost /boost
 RUN pushd /boost \
@@ -41,7 +41,7 @@ RUN pushd /boost \
 
 # install gcc-10
 RUN yum -y install epel-release \
- && yum -y install  --nogpg install https://mirror.ghettoforge.org/distributions/gf/gf-release-latest.gf.el7.noarch.rpm \
+ && yum -y --nogpg install https://mirror.ghettoforge.org/distributions/gf/gf-release-latest.gf.el7.noarch.rpm \
  && yum -y install gcc10-gcc-c++
 
 RUN ldconfig
