@@ -7,3 +7,6 @@ RUN apt-get -qq update && apt-get install -y autoconf automake g++ libtool pkg-c
 RUN gem install coveralls-lcov rake package_cloud
 RUN apt-get install -y python3-pip python3-sphinx python3-sphinx-rtd-theme wget
 RUN cd /tmp && wget https://github.com/fredRos/pypmc/archive/v1.1.4.tar.gz && pip3 install ./v1.1.4.tar.gz && cd /
+
+# install g++-10
+RUN apt-get -qq update && apt install -y g++-10 && update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-10 80
