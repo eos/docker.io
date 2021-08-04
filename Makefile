@@ -1,7 +1,6 @@
 .PHONY: upload
 
 TARGETS = \
-	xenial \
 	bionic \
 	disco \
 	focal \
