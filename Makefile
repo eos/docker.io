@@ -1,5 +1,3 @@
-.PHONY: upload
-
 TARGETS = \
 	bionic \
 	focal \
@@ -9,6 +7,8 @@ TARGETS = \
 	manylinux2014-cp38
 
 IMAGES = $(foreach target,$(TARGETS),build-essentials-$(target))
+
+.PHONY: upload $(TARGETS)
 
 build-essentials-%: %
 	docker build -t "build-essentials:$*" -f "$*" .
