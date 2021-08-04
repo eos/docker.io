@@ -2,10 +2,11 @@ FROM ubuntu:bionic
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get -qq update && apt-get install -y apt-transport-https software-properties-common curl gnupg
 RUN add-apt-repository ppa:git-core/ppa
-RUN curl -L https://packagecloud.io/eos/eos/gpgkey | apt-key add -
-RUN echo 'deb https://packagecloud.io/eos/eos/ubuntu/ bionic main' > /etc/apt/sources.list.d/eos.list
-RUN apt-get -qq update && apt-get install -y autoconf automake g++ libtool pkg-config libboost-filesystem-dev libboost-python-dev libboost-system-dev libfftw3-3 libfftw3-dev libgsl0-dev libhdf5-serial-dev libyaml-cpp-dev python3 python3-dev python3-h5py python3-matplotlib python3-scipy python3-yaml minuit2 libpmc rubygems ruby-dev git texlive-latex-base texlive-latex-extra texlive-xetex git clang-6.0 python3-pip
-RUN gem install coveralls-lcov rake package_cloud
+RUN apt-get -qq update \
+ && apt-get install -y autoconf automake g++ clang-6.0 libtool pkg-config \
+    libboost-filesystem-dev libboost-python-dev libboost-system-dev libgsl0-dev libyaml-cpp-dev \
+    python3 python3-dev python3-pip python3-h5py python3-matplotlib python3-scipy python3-yaml \
+    git texlive-latex-base texlive-latex-extra texlive-xetex
 RUN pip3 install sphinx sphinx-rtd-theme
 
 # install g++-10
