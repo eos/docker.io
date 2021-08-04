@@ -3,6 +3,7 @@
 TARGETS = \
 	bionic \
 	focal \
+	hirsute \
 	manylinux2014-cp36 \
 	manylinux2014-cp37 \
 	manylinux2014-cp38
