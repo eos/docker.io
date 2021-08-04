@@ -4,7 +4,8 @@ TARGETS = \
 	hirsute \
 	manylinux2014-cp36 \
 	manylinux2014-cp37 \
-	manylinux2014-cp38
+	manylinux2014-cp38 \
+	manylinux2014-cp39
 
 IMAGES = $(foreach target,$(TARGETS),build-essentials-$(target))
 
