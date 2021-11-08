@@ -1,22 +1,32 @@
 TARGETS = \
-	bionic \
-	focal \
-	hirsute \
-	manylinux2014-cp36 \
-	manylinux2014-cp37 \
-	manylinux2014-cp38 \
-	manylinux2014-cp39
+	gitpod \
+	ubuntu/bionic \
+	ubuntu/focal \
+	ubuntu/hirsute \
+	ubuntu/impish \
+	manylinux2014/cp36 \
+	manylinux2014/cp37 \
+	manylinux2014/cp38 \
+	manylinux2014/cp39
 
 IMAGES = $(foreach target,$(TARGETS),build-essentials-$(target))
 
-.PHONY: upload $(TARGETS)
+.PHONY: build $(foreach targt,$(TARGETS),build-$(target))
 
-build-essentials-%: %
-	docker build -t "build-essentials:$*" -f "$*" .
-	docker tag "build-essentials:$*" "eoshep/build-essentials:$*"
-	touch $@
+build-%:
+	docker \
+	    build \
+		-t "build-essentials:$*" \
+		-f $(subst -,/,$*)/Dockerfile \
+		$(subst -,/,$*)
+	docker \
+		tag \
+		"build-essentials:$(notdir $*)" \
+		"eoshep/build-essentials:$(notdir $*)"
 
-upload: $(IMAGES)
-	for img in $^ ; do \
-	    docker push eoshep/build-essentials ; \
-	done
+build: $(foreach target,$(TARGETS),build-$(subst /,-,$(target)))
+
+upload-%: build-%
+	docker push eoshep/build-essentials:$*
+
+upload: $(foreach target,$(TARGETS),upload-$(subst /,-,$(target)))
