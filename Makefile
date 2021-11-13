@@ -16,6 +16,7 @@ IMAGES = $(foreach target,$(TARGETS),build-essentials-$(target))
 build-%:
 	docker \
 	    build \
+		$(DOCKER_BUILD_ARGS) \
 		-t "build-essentials:$*" \
 		-f $(subst -,/,$*)/Dockerfile \
 		$(subst -,/,$*)
