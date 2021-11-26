@@ -24,3 +24,7 @@ RUN pip3 install --upgrade \
 #  install and upgrade user packages next
 RUN pip3 install --upgrade \
     cython h5py jinja2 jupyter matplotlib nbconvert numpy pypmc pyyaml scipy sphinx sphinx-argparse sphinxcontrib-contentui sphinx-rtd-theme wilson
+
+# install package cloud client
+RUN apt-get install -y ruby-dev \
+ && gem install rake package_cloud
