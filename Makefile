@@ -11,7 +11,7 @@ TARGETS = \
 
 IMAGES = $(foreach target,$(TARGETS),build-essentials-$(target))
 
-.PHONY: build $(foreach targt,$(TARGETS),build-$(target))
+.PHONY: build $(foreach target,$(TARGETS),build-$(target))
 
 build-%:
 	docker \
