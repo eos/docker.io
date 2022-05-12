@@ -1,9 +1,7 @@
 TARGETS = \
 	gitpod \
-	ubuntu/bionic \
 	ubuntu/focal \
-	ubuntu/hirsute \
-	ubuntu/impish \
+	ubuntu/jammy \
 	manylinux2014/cp36 \
 	manylinux2014/cp37 \
 	manylinux2014/cp38 \
