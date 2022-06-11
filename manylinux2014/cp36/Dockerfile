@@ -1,6 +1,8 @@
 FROM quay.io/pypa/manylinux2014_x86_64:latest
 
-ENV PYTHON /opt/_internal/cpython-3.6.14/bin/python3.6m
+ENV PYTHON /usr/local/bin/python3.6
+# fix include directories
+RUN for d in /opt/_internal/cpython-3.6.* ; do echo ${d} ; ln -sf ${d}/include/python3.6m ${d}/include/python3.6 ; done
 
 RUN yum -y install centos-release-scl \
  && yum-config-manager --enable rhel-server-rhscl-7-rpms \
@@ -8,9 +10,8 @@ RUN yum -y install centos-release-scl \
 RUN ln -s /opt/rh/rh-git218/root/usr/bin/git /usr/bin/git \
  && ln -s /opt/rh/httpd24/root/usr/lib64/libcurl-httpd24.so.4.5.0      /usr/lib64/libcurl-httpd24.so.4 \
  && ln -s /opt/rh/httpd24/root/usr/lib64/libnghttp2-httpd24.so.14.4.1  /usr/lib64/libnghttp2-httpd24.so.14
-RUN yum -y install chrpath cmake fftw-devel gsl gsl-devel hdf5-devel hdf5-static libtool python3 python3-devel python3-pip
+RUN yum -y install chrpath cmake fftw-devel gsl gsl-devel hdf5-devel hdf5-static libtool
 RUN $PYTHON -m pip install auditwheel h5py matplotlib 'numpy>=1.13.3,<2' scipy twine pypmc pyyaml wheel wilson
-RUN rm -Rf /usr/local/bin/
 
 # remove system yaml and install v0.6.2
 RUN yum -y erase yaml-cpp
@@ -28,7 +29,6 @@ RUN mkdir -p /yaml/build \
  && rm -Rf yaml
 
 # install boost
-RUN ln -s /opt/_internal/cpython-3.6.14/include/python3.6m  /opt/_internal/cpython-3.6.14/include/python3.6
 RUN mkdir /boost \
  && pushd /boost \
  && curl -L -O https://boostorg.jfrog.io/artifactory/main/release/1.76.0/source/boost_1_76_0.tar.gz \
