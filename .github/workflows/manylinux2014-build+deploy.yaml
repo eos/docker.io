@@ -1,0 +1,34 @@
+on:
+  push:
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: [ cp36, cp37, cp38, cp39 ]
+    name: Build & deploy ``manylinux2014`` with ``${{ matrix.python }}``
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v3
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      -
+        name: Login to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      -
+        name: Build and push
+        uses: docker/build-push-action@v3
+        with:
+          context: manylinux2014/${{ matrix.python }}
+          push: true
+          tags: |
+            eoshep/manylinux2014-${{ matrix.python}}:latest
+            eoshep/manylinux2014-${{ matrix.python}}:${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
