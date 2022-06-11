@@ -1,0 +1,34 @@
+on:
+  push:
+
+jobs:
+  docker:
+    strategy:
+      matrix:
+        version: [ focal, jammy ]
+    runs-on: ubuntu-latest
+    name: Build & deploy ``ubuntu`` version ``${{ matrix.version }}``
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v3
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      -
+        name: Login to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      -
+        name: Build and push
+        uses: docker/build-push-action@v3
+        with:
+          context: ubuntu/${{ matrix.version }}
+          push: true
+          tags: |
+            eoshep/ubuntu-${{ matrix.version }}:latest
+            eoshep/ubuntu-${{ matrix.version }}:${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
