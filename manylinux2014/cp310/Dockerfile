@@ -12,6 +12,7 @@ RUN yum -y install chrpath cmake fftw-devel gsl gsl-devel hdf5-devel hdf5-static
 RUN $PYTHON -m pip install auditwheel h5py matplotlib 'numpy>=1.13.3,<2' scipy twine pypmc pyyaml wheel wilson
 
 # remove system yaml and install v0.6.2
+# installation destination of the pkg-config file is hardcoded to /usr/lib/pkgconfig
 RUN yum -y erase yaml-cpp
 RUN mkdir -p /yaml/build \
  && pushd /yaml \
@@ -24,7 +25,8 @@ RUN mkdir -p /yaml/build \
  && make install \
  && popd \
  && popd \
- && rm -Rf yaml
+ && rm -Rf yaml \
+ && mv /usr/lib/pkgconfig/yaml-cpp.pc /usr/lib64/pkgconfig/yaml-cpp.pc
 
 # install boost
 RUN mkdir /boost \
