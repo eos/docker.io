@@ -11,6 +11,9 @@ RUN ln -s /opt/rh/rh-git218/root/usr/bin/git /usr/bin/git \
 RUN yum -y install chrpath cmake fftw-devel gsl gsl-devel hdf5-devel hdf5-static libtool
 RUN $PYTHON -m pip install auditwheel h5py matplotlib 'numpy>=1.13.3,<2' scipy twine pypmc pyyaml wheel wilson
 
+# copy system pkg.m4 to manylinux2014's custom aclocal installation in /usr/local
+RUN cp /usr/share/aclocal/pkg.m4 /usr/local/share/aclocal/pkg.m4
+
 # remove system yaml and install v0.6.2
 # installation destination of the pkg-config file is hardcoded to /usr/lib/pkgconfig
 RUN yum -y erase yaml-cpp
