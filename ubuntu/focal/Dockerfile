@@ -20,7 +20,7 @@ RUN pip3 install --upgrade \
     pip wheel
 #  install and upgrade user packages next
 RUN pip3 install --upgrade \
-    cython h5py jupyter matplotlib nbconvert numpy pypmc pyyaml scipy wilson
+    cython h5py jupyter matplotlib nbconvert networkx numpy pypmc pyyaml scipy wilson
 
 # install package cloud client
 RUN apt-get install -y ruby-dev \
