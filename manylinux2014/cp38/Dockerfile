@@ -1,4 +1,4 @@
-FROM quay.io/pypa/manylinux2014_x86_64:latest
+FROM quay.io/pypa/manylinux2014_x86_64:2022-11-28-5d13db4
 
 ENV PYTHON /usr/local/bin/python3.8
 
