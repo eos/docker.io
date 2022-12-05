@@ -6,7 +6,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python: [ cp36, cp37, cp38, cp39, cp310 ]
+        python: [ cp37, cp38, cp39, cp310 ]
     name: Build & deploy ``manylinux2014`` with ``${{ matrix.python }}``
     steps:
       -
