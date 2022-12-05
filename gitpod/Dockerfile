@@ -1,4 +1,4 @@
-FROM gitpod/workspace-full
+FROM gitpod/workspace-full:2022-12-02-22-15-49
 
 ENV DEBIAN_FRONTEND noninteractive
 RUN sudo apt-get -qq update
