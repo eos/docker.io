@@ -5,7 +5,7 @@ jobs:
   docker:
     strategy:
       matrix:
-        version: [ focal, jammy ]
+        version: [ jammy ]
     runs-on: ubuntu-latest
     name: Build & deploy ``ubuntu`` version ``${{ matrix.version }}``
     steps:
