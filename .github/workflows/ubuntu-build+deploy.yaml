@@ -35,7 +35,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: ubuntu/${{ matrix.version }}
-          push: true
+          push: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
           tags: |
             eoshep/ubuntu-${{ matrix.version }}:latest
             eoshep/ubuntu-${{ matrix.version }}:${{ github.sha }}
