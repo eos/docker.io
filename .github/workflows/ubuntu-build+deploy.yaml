@@ -1,5 +1,14 @@
 on:
   push:
+    branches:
+      - 'master'
+    paths:
+      - 'ubuntu/**'
+  pull_request:
+    branches:
+      - 'master'
+    paths:
+      - 'ubuntu/**'
 
 jobs:
   docker:

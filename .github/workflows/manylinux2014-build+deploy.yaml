@@ -1,5 +1,14 @@
 on:
   push:
+    branches:
+      - 'master'
+    paths:
+      - 'manylinux2014/**'
+  pull_request:
+    branches:
+      - 'master'
+    paths:
+      - 'manylinux2014/**'
 
 jobs:
   docker:

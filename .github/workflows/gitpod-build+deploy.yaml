@@ -1,5 +1,14 @@
 on:
   push:
+    branches:
+      - 'master'
+    paths:
+      - 'gitpod/**'
+  pull_request:
+    branches:
+      - 'master'
+    paths:
+      - 'gitpod/**'
 
 jobs:
   docker:
