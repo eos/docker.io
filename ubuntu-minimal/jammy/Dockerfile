@@ -17,7 +17,7 @@ RUN pip3 install --upgrade \
     pip wheel
 #  install and upgrade user packages next
 RUN pip3 install --upgrade \
-    cython dynesty ipython ipykernel jupyter matplotlib nbconvert networkx numpy pypmc pyyaml scipy \
-    wilson
+    cython dynesty ipython ipykernel jupyter matplotlib nbconvert networkx numpy pypmc pyyaml RISE \
+    scipy wilson
 
 RUN pip3 install --upgrade --pre eoshep
