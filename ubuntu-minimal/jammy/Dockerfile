@@ -3,7 +3,7 @@ ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get -qq update
 RUN apt-get install -y --no-install-recommends \
     gcc libboost-filesystem1.74 libboost-python1.74 libboost-system1.74 libgsl27 libyaml-cpp0.7 \
-    python3 python3-pip python3-venv \
+    python3 python3-pip python3-venv tree \
     git texlive-latex-base texlive-latex-extra texlive-xetex cm-super dvipng
 
 # setup python virtual environment
