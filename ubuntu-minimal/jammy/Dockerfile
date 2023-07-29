@@ -2,14 +2,8 @@ FROM ubuntu:jammy
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get -qq update
 RUN apt-get install -y --no-install-recommends \
-    gcc libboost-filesystem1.74 libboost-python1.74 libboost-system1.74 libgsl27 libyaml-cpp0.7 \
-    python3 python3-pip python3-venv tree \
-    git texlive-latex-base texlive-latex-extra texlive-xetex cm-super dvipng
-
-# setup python virtual environment
-ENV VIRTUAL_ENV=/opt/venv
-RUN python3 -m venv $VIRTUAL_ENV
-ENV PATH="$VIRTUAL_ENV/bin:$PATH"
+    python3 python3-pip tree \
+    git texlive-latex-base texlive-xetex cm-super dvipng
 
 # install python packages
 #  upgrade pip first
@@ -17,7 +11,7 @@ RUN pip3 install --upgrade \
     pip wheel
 #  install and upgrade user packages next
 RUN pip3 install --upgrade \
-    cython dynesty ipython ipykernel jupyter matplotlib nbconvert networkx numpy pypmc pyyaml RISE \
-    scipy wilson
-
-RUN pip3 install --upgrade --pre eoshep
+    cython dynesty ipython ipykernel jupyter matplotlib nbconvert networkx numpy 'pypmc>=1.2.2' pyyaml scipy \
+    wilson \
+	numpy pyhf pandas cabinetry matplotlib uproot pyunfold
+RUN pip3 install --upgrade --pre 'eoshep>=1.0.9.dev1344'
