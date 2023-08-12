@@ -32,13 +32,18 @@ RUN mkdir -p /yaml/build \
  && mv /usr/lib/pkgconfig/yaml-cpp.pc /usr/lib64/pkgconfig/yaml-cpp.pc
 
 # install boost
+#  - fix bug when linking against boost/phoenix
 RUN mkdir /boost \
  && pushd /boost \
  && curl -L -O https://boostorg.jfrog.io/artifactory/main/release/1.83.0/source/boost_1_83_0.tar.gz \
  && tar zxf /boost/boost_1_83_0.tar.gz \
  && pushd boost_1_83_0 \
+ && sed -i -e '/^#include <boost\/phoenix\/stl\/tuple\.hpp/d' boost/phoenix/stl.hpp \
  && ./bootstrap.sh --with-python=$PYTHON --with-libraries=filesystem,python,system \
- && ./b2 install --build-type=minimal --prefix=/usr
+ && ./b2 install --build-type=minimal --prefix=/usr \
+ && popd \
+ && popd \
+ && rm -Rf /boost
 
 # install GSL
 RUN mkdir /gsl \
