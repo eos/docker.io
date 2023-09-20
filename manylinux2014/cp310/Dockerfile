@@ -9,7 +9,7 @@ RUN ln -s /opt/rh/rh-git218/root/usr/bin/git /usr/bin/git \
  && ln -s /opt/rh/httpd24/root/usr/lib64/libcurl-httpd24.so.4.5.0      /usr/lib64/libcurl-httpd24.so.4 \
  && ln -s /opt/rh/httpd24/root/usr/lib64/libnghttp2-httpd24.so.14.4.1  /usr/lib64/libnghttp2-httpd24.so.14
 RUN yum -y install chrpath cmake fftw-devel hdf5-devel hdf5-static libtool devtoolset-11
-RUN $PYTHON -m pip install auditwheel 'dynesty==2.0.3' h5py matplotlib 'numpy>=1.13.3,<2' scipy twine pypmc pyyaml wheel wilson
+RUN $PYTHON -m pip install auditwheel 'dynesty==2.0.3' h5py matplotlib 'numpy>=1.13.3,<2' scipy twine pyhf pypmc pyyaml wheel wilson
 
 # copy system pkg.m4 to manylinux2014's custom aclocal installation in /usr/local
 RUN cp /usr/share/aclocal/pkg.m4 /usr/local/share/aclocal/pkg.m4
