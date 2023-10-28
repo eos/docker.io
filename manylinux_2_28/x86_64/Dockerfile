@@ -1,4 +1,4 @@
-FROM quay.io/pypa/manylinux_2_28_x86_64:2023-09-04-0828984
+FROM quay.io/pypa/manylinux_2_28_x86_64:2023-10-22-409125c
 
 RUN yum -y install chrpath cmake git gsl gsl-devel libtool
 
