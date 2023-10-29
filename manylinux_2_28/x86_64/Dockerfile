@@ -56,7 +56,7 @@ RUN ldconfig
 
 RUN for pyver in ${PYTHON_VERSIONS} ; do \
       export PYTHON=/usr/local/bin/python${pyver} ; \
-      $PYTHON -m pip install auditwheel 'dynesty==2.0.3' matplotlib 'numpy>=1.13.3,<2' scipy twine pypmc pyyaml wheel wilson ; \
+      $PYTHON -m pip install auditwheel 'dynesty==2.0.3' matplotlib 'numpy>=1.13.3,<2' scipy twine pyhf pypmc pyyaml wheel wilson ; \
     done
 
 # make pkg.m4 available to aclocal
