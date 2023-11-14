@@ -31,7 +31,7 @@ RUN mkdir /gsl \
 
 # python version-dependent part
 
-ARG PYTHON_VERSIONS="3.8 3.9 3.10 3.11"
+ARG PYTHON_VERSIONS="3.8 3.9 3.10 3.11 3.12"
 
 # install boost
 #  - fix bug when linking against boost/phoenix
