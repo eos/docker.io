@@ -16,7 +16,7 @@ USER analysis
 
 # install python packages
 RUN pip3 install --user --upgrade \
-    cython ipython ipykernel jupyter matplotlib nbconvert networkx numpy 'pypmc>=1.2.2' pyyaml scipy \
-    wilson \
+    argcomplete cython ipython ipykernel jupyter matplotlib nbconvert networkx numpy 'pypmc>=1.2.2' pyyaml scipy \
+    termcolor wilson \
 	numpy pyhf pandas cabinetry matplotlib uproot pyunfold
 RUN pip3 install --user --upgrade 'eoshep>=1.0.10'
