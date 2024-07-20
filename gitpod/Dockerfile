@@ -8,4 +8,4 @@ RUN sudo apt-get install -y autoconf automake g++ clang-12 libtool pkg-config li
     make git texlive-latex-base texlive-latex-extra texlive-xetex cm-super dvipng
 
 # install pypmc
-RUN pip3 install --user -U cython dynesty numpy pypmc scipy wilson
+RUN pip3 install --user -U argcomplete cython dynesty numpy pypmc termcolor scipy wilson
