@@ -1,0 +1,76 @@
+on:
+  push:
+    branches:
+      - 'master'
+    paths:
+      - 'macos/**'
+  pull_request:
+    branches:
+      - 'master'
+    paths:
+      - 'macos/**'
+
+jobs:
+  build:
+    name: Build & deploy ``macOS`` images
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { version: ventura, arch: x86_64, runner: macos-13, jobs: 4, prefix: /usr/local,    CXXFLAGS="-O2 -g -march=x86-64 -fPIC -DPIC"   }
+          - { version: sonoma,  arch: arm64,  runner: macos-14, jobs: 3, prefix: /opt/homebrew, CXXFLAGS="-O2 -g -march=armv8.5a -fPIC -DPIC" }
+    runs-on: ${{ matrix.runner }}
+    env:
+      JOBS: ${{ matrix.jobs }}
+      DESTDIR: /tmp/DESTDIR
+      OUTPUTDIR: /tmp/OUTPUT
+      PREFIX: ${{ matrix.prefix }}
+      PYTHON_VERSIONS: "3.9 3.10 3.11 3.12"
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v3
+      -
+        name: Install build dependencies and workflow dependencies
+        shell: bash
+        run: |
+          brew install \
+            autoconf automake cmake gnu-sed libtool m4 make pkg-config \
+            oras
+      -
+        name: Create directories
+        shell: bash
+        run: |
+          mkdir -p ${DESTDIR}
+          mkdir -p ${OUTPUTDIR}
+      -
+        name: Build yaml-cpp
+        shell: bash
+        run: ./macos/${{ matrix.version }}/build-yaml-cpp.bash
+      -
+        name: Build GSL
+        shell: bash
+        run: ./macos/${{ matrix.version }}/build-gsl.bash
+      -
+        name: Build Boost
+        shell: bash
+        run: ./macos/${{ matrix.version }}/build-boost.bash
+      -
+        name: Create tarball
+        shell: bash
+        run: |
+          cd ${DESTDIR}
+          tar zcf ${OUTPUTDIR}/${{ matrix.version }}-${{ matrix.arch }}.tar.gz *
+      -
+        name: Push tarball to ghcr.io
+        shell: bash
+        run: |
+          oras login --username "${{ github.actor }}" --password "${{ secrets.GITHUB_TOKEN }}" ghcr.io
+          cd ${OUTPUTDIR}
+          oras push \
+            ghcr.io/eos/docker.io:${{ matrix.version }}-${{ matrix.arch }}-${GITHUB_SHA::7} \
+            -a "org.opencontainers.image.source=https://github.com/eos/docker.io" \
+            ${{ matrix.version }}-${{ matrix.arch}}.tar.gz
