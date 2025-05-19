@@ -1,4 +1,4 @@
-FROM quay.io/pypa/manylinux_2_28_aarch64:2023-10-22-409125c
+FROM quay.io/pypa/manylinux_2_28_aarch64:2025-05-16-b59c0c7
 
 RUN yum -y install chrpath cmake git libtool \
   && yum -y clean all \
@@ -11,7 +11,7 @@ RUN mkdir -p /yaml/build \
  && tar zxf 0.8.0.tar.gz \
  && pushd build \
  && export CXXFLAGS="-O2 -g -fPIC -DPIC" \
- && cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr -DBUILD_SHARED_LIBS=on ../yaml-cpp-0.8.0 \
+ && cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr -DBUILD_SHARED_LIBS=on -DCMAKE_POLICY_VERSION_MINIMUM=3.5 ../yaml-cpp-0.8.0 \
  && make -j4 \
  && make install \
  && popd \
@@ -33,17 +33,17 @@ RUN mkdir /gsl \
 
 # python version-dependent part
 
-ARG PYTHON_VERSIONS="3.10"
+ARG PYTHON_VERSIONS="3.10 3.11 3.12 3.13"
 
 # install boost
 #  - fix bug when linking against boost/phoenix
 RUN mkdir /boost \
  && pushd /boost \
- && curl -L -O https://boostorg.jfrog.io/artifactory/main/release/1.83.0/source/boost_1_83_0.tar.gz \
- && tar zxf /boost/boost_1_83_0.tar.gz \
- && pushd boost_1_83_0 \
+ && curl -L -O https://archives.boost.io/release/1.88.0/source/boost_1_88_0.tar.gz \
+ && tar zxf /boost/boost_1_88_0.tar.gz \
+ && pushd boost_1_88_0 \
  && sed -i -e '/^#include <boost\/phoenix\/stl\/tuple\.hpp/d' boost/phoenix/stl.hpp \
- && ./bootstrap.sh --with-python=$PYTHON --with-libraries=filesystem,system \
+ && ./bootstrap.sh --with-python=$PYTHON --with-libraries=filesystem,math,system \
  && ./b2 install --build-type=minimal --prefix=/usr \
  && for pyver in ${PYTHON_VERSIONS} ; do \
       export PYTHON=/usr/local/bin/python${pyver} ; \
