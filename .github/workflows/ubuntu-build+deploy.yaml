@@ -14,13 +14,13 @@ jobs:
   docker:
     strategy:
       matrix:
-        version: [ jammy ]
+        version: [ jammy, noble ]
     runs-on: ubuntu-latest
     name: Build & deploy ``ubuntu`` version ``${{ matrix.version }}``
     steps:
       -
         name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       -
         name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
