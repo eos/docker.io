@@ -1,4 +1,4 @@
-FROM ubuntu:noble
+FROM ubuntu:noble-20250529
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get -qq update
 RUN apt-get install -y autoconf automake g++ clang-19 libtool pkg-config libboost-filesystem-dev \

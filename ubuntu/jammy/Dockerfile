@@ -1,4 +1,4 @@
-FROM ubuntu:jammy
+FROM ubuntu:jammy-20250530
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get -qq update
 RUN apt-get install -y autoconf automake g++ clang-14 libtool pkg-config libboost-filesystem-dev \
