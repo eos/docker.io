@@ -58,7 +58,7 @@ RUN ldconfig
 
 RUN for pyver in ${PYTHON_VERSIONS} ; do \
       export PYTHON=/usr/local/bin/python${pyver} ; \
-      $PYTHON -m pip install argcomplete auditwheel dynesty matplotlib 'numpy>=2' scipy termcolor twine pyhf pypmc pyyaml wheel wilson ; \
+      $PYTHON -m pip install argcomplete auditwheel dynesty matplotlib 'numpy>=2' scipy termcolor twine pyhf 'pypmc>=1.2.6' pyyaml wheel wilson ; \
     done
 
 # make pkg.m4 available to aclocal

@@ -17,7 +17,7 @@ RUN pip3 install --upgrade \
     pip wheel
 #  install and upgrade user packages next
 RUN pip3 install --upgrade \
-    argcomplete cython dynesty h5py ipython ipykernel jinja2 jupyter matplotlib nbconvert networkx numpy pandoc pyhf pypmc pyyaml scipy \
+    argcomplete cython dynesty h5py ipython ipykernel jinja2 jupyter matplotlib nbconvert networkx numpy pandoc pyhf 'pypmc>=1.2.6' pyyaml scipy \
     sphinx sphinx-argparse sphinxcontrib-contentui sphinx-rtd-theme nbsphinx termcolor tqdm wilson
 
 # install package cloud client
