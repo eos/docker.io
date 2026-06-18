@@ -31,6 +31,19 @@ RUN mkdir /gsl \
  && popd \
  && rm -Rf gsl
 
+# install FFTW3
+RUN mkdir /fftw \
+ && pushd /fftw \
+ && curl -L -O https://www.fftw.org/fftw-3.3.10.tar.gz \
+ && tar zxf /fftw/fftw-3.3.10.tar.gz \
+ && pushd fftw-3.3.10 \
+ && ./configure --prefix=/usr --enable-shared \
+ && make -j4 \
+ && make install \
+ && popd \
+ && popd \
+ && rm -Rf fftw
+
 # python version-dependent part
 
 ARG PYTHON_VERSIONS="3.10 3.11 3.12 3.13 3.14"
