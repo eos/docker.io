@@ -73,11 +73,22 @@ jobs:
         shell: bash
         run: ./macos/${{ matrix.version }}/build-boost.bash
       -
+        name: Normalise install names
+        shell: bash
+        run: ./macos/${{ matrix.version }}/fix-install-names.bash
+      -
         name: Create tarball
         shell: bash
         run: |
           cd ${DESTDIR}
           tar zcf ${OUTPUTDIR}/macos-${{ matrix.version }}.tar.gz *
+      -
+        name: Verify bundle is self-describing
+        shell: bash
+        run: |
+          mkdir -p /tmp/VERIFY
+          tar xzf ${OUTPUTDIR}/macos-${{ matrix.version }}.tar.gz -C /tmp/VERIFY
+          ./macos/${{ matrix.version }}/verify-bundle.bash /tmp/VERIFY
       -
         name: Push tarball to ghcr.io
         shell: bash
