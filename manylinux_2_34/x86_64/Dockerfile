@@ -1,6 +1,10 @@
 FROM quay.io/pypa/manylinux_2_34_x86_64:2026.04.04-1
 
-RUN yum -y install chrpath cmake git gsl gsl-devel libtool
+# GSL is built from source below on every architecture; the distribution's package is
+# older (2.6) and is deliberately not installed.
+RUN yum -y install chrpath cmake git libtool \
+ && yum -y clean all \
+ && rm -rf /var/cache/yum
 
 # installation destination of the pkg-config file is hardcoded to /usr/lib/pkgconfig
 #  - using -DCMAKE_POLICY_VERSION_MINIMUM=3.5 to avoid https://github.com/jbeder/yaml-cpp/issues/1352
@@ -20,9 +24,9 @@ RUN mkdir -p /yaml/build \
 # install GSL
 RUN mkdir /gsl \
  && pushd /gsl \
- && curl -L -O https://ftp.gnu.org/gnu/gsl/gsl-2.7.tar.gz \
- && tar zxf /gsl/gsl-2.7.tar.gz \
- && pushd gsl-2.7 \
+ && curl -L -O https://ftp.gnu.org/gnu/gsl/gsl-2.8.tar.gz \
+ && tar zxf /gsl/gsl-2.8.tar.gz \
+ && pushd gsl-2.8 \
  && ./configure --prefix=/usr \
  && make -j4 \
  && make install \
