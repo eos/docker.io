@@ -19,9 +19,15 @@ echo "Build Boost (Python-independent parts)"
 ./b2 install link=shared threading=single cxxflags="${CXXFLAGS}" --prefix=${DESTDIR}/${PREFIX} -j ${JOBS}
 for pyver in ${PYTHON_VERSIONS} ; do
     echo "Build Boost (libboost_python${pyver/./})"
-    pyinc=${PREFIX}/opt/python@${pyver}/Frameworks/Python.framework/Versions/${pyver}/include/python${pyver}/
-    pylib=${PREFIX}/opt/python@${pyver}/Frameworks/Python.framework/Versions/${pyver}/lib
-    export PYTHON=${PREFIX}/bin/python${pyver}
+    # Use the runner's own CPython (installed by actions/setup-python from its
+    # pre-cached tool versions), not a Homebrew-installed Python: it is already
+    # present, so building/fetching one via Homebrew is pure waste. Query the
+    # interpreter itself for its layout instead of assuming a particular
+    # installation's directory structure (Homebrew's framework layout differs
+    # from the toolcache's).
+    export PYTHON=$(command -v python${pyver})
+    pyinc=$(${PYTHON} -c "import sysconfig; print(sysconfig.get_paths()['include'])")
+    pylib=$(${PYTHON} -c "import sysconfig; print(sysconfig.get_config_var('LIBDIR'))")
     cat > user-config.jam <<EOF
         using darwin : : clang++ ;
         using python : ${pyver}
@@ -30,7 +36,7 @@ for pyver in ${PYTHON_VERSIONS} ; do
                      : ${pylib} ;
 EOF
     gsed -i -e 's/using python/#using python/' ./bootstrap.sh
-    ./bootstrap.sh --with-python=$PYTHON --with-python-root=${PREFIX} --with-libraries=python
+    ./bootstrap.sh --with-python=$PYTHON --with-libraries=python
     ./b2 install \
         link=shared threading=single \
         cxxflags=-std=c++14 \
