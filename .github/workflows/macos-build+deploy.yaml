@@ -17,22 +17,24 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - { version: ventura, arch: x86_64, runner: macos-13, jobs: 4, prefix: /usr/local,    CXXFLAGS="-O2 -g -march=x86-64 -fPIC -DPIC"   }
-          - { version: sonoma,  arch: arm64,  runner: macos-14, jobs: 3, prefix: /opt/homebrew, CXXFLAGS="-O2 -g -march=armv8.5a -fPIC -DPIC" }
+          - { version: arm64, arch: arm64, runner: macos-15, jobs: 3, prefix: /opt/homebrew, cxxflags: "-O2 -g -march=armv8.5a -fPIC -DPIC", deployment_target: "14.0" }
     runs-on: ${{ matrix.runner }}
     env:
       JOBS: ${{ matrix.jobs }}
       DESTDIR: /tmp/DESTDIR
       OUTPUTDIR: /tmp/OUTPUT
       PREFIX: ${{ matrix.prefix }}
-      PYTHON_VERSIONS: "3.9 3.10 3.11 3.12"
+      PYTHON_VERSIONS: "3.12 3.13 3.14"
+      CFLAGS: ${{ matrix.cxxflags }}
+      CXXFLAGS: ${{ matrix.cxxflags }}
+      MACOSX_DEPLOYMENT_TARGET: ${{ matrix.deployment_target }}
     permissions:
       contents: read
       packages: write
     steps:
       -
         name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       -
         name: Install build dependencies and workflow dependencies
         shell: bash
@@ -55,6 +57,10 @@ jobs:
         shell: bash
         run: ./macos/${{ matrix.version }}/build-gsl.bash
       -
+        name: Build FFTW3
+        shell: bash
+        run: ./macos/${{ matrix.version }}/build-fftw3.bash
+      -
         name: Build Boost
         shell: bash
         run: ./macos/${{ matrix.version }}/build-boost.bash
@@ -63,7 +69,7 @@ jobs:
         shell: bash
         run: |
           cd ${DESTDIR}
-          tar zcf ${OUTPUTDIR}/${{ matrix.version }}-${{ matrix.arch }}.tar.gz *
+          tar zcf ${OUTPUTDIR}/macos-${{ matrix.version }}.tar.gz *
       -
         name: Push tarball to ghcr.io
         shell: bash
@@ -71,6 +77,6 @@ jobs:
           oras login --username "${{ github.actor }}" --password "${{ secrets.GITHUB_TOKEN }}" ghcr.io
           cd ${OUTPUTDIR}
           oras push \
-            ghcr.io/eos/docker.io:${{ matrix.version }}-${{ matrix.arch }}-${GITHUB_SHA::7} \
+            ghcr.io/eos/docker.io:macos-${{ matrix.version }}-${GITHUB_SHA::7} \
             -a "org.opencontainers.image.source=https://github.com/eos/docker.io" \
-            ${{ matrix.version }}-${{ matrix.arch}}.tar.gz
+            macos-${{ matrix.version }}.tar.gz
