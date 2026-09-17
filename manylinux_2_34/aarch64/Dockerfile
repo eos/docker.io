@@ -13,7 +13,7 @@ RUN mkdir -p /yaml/build \
  && tar zxf yaml-cpp-0.9.0.tar.gz \
  && pushd build \
  && export CXXFLAGS="-O2 -g -fPIC -DPIC" \
- && cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr -DBUILD_SHARED_LIBS=on -DCMAKE_POLICY_VERSION_MINIMUM=3.5 ../yaml-cpp-yaml-cpp-0.9.0 \
+ && cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr -DBUILD_SHARED_LIBS=on ../yaml-cpp-yaml-cpp-0.9.0 \
  && make -j4 \
  && make install \
  && popd \
