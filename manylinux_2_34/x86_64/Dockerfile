@@ -7,14 +7,13 @@ RUN yum -y install chrpath cmake git libtool \
  && rm -rf /var/cache/yum
 
 # installation destination of the pkg-config file is hardcoded to /usr/lib/pkgconfig
-#  - using -DCMAKE_POLICY_VERSION_MINIMUM=3.5 to avoid https://github.com/jbeder/yaml-cpp/issues/1352
 RUN mkdir -p /yaml/build \
  && pushd /yaml \
  && curl -L -O https://github.com/jbeder/yaml-cpp/archive/refs/tags/yaml-cpp-0.9.0.tar.gz \
  && tar zxf yaml-cpp-0.9.0.tar.gz \
  && pushd build \
  && export CXXFLAGS="-O2 -g -march=x86-64 -fPIC -DPIC" \
- && cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr -DBUILD_SHARED_LIBS=on -DCMAKE_POLICY_VERSION_MINIMUM=3.5 ../yaml-cpp-yaml-cpp-0.9.0 \
+ && cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr -DBUILD_SHARED_LIBS=on ../yaml-cpp-yaml-cpp-0.9.0 \
  && make -j2 \
  && make install \
  && popd \
